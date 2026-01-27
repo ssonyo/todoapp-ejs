@@ -62,6 +62,18 @@ app.get('/write', (req: Request, res: Response) => {
 });
 
 
+
+app.get('/edit/:id', async (req: Request, res: Response) => {
+    try {
+        const targetId = req.params.id;
+        const data = await db.collection('posts').findOne({_id: new ObjectId(targetId)});
+        res.render('edit.ejs', { data : data });
+    } catch (e) {
+        console.log(e);
+        res.status(500).send('서버에러 발생')
+    }
+});
+
 app.post('/add', async (req: Request, res: Response) => {
     // 1. 브라우저가 보낸 데이터가 잘 왔는지 확인
     console.log(req.body);

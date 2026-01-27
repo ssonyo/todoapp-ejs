@@ -28,10 +28,16 @@
                         </div>
                     </div>
 
+                    <%# 수정기능 추가 %>
+                    <div class="d-flex align-items-center gap-2">
+                        <a href="/edit/<%= posts[i]._id %>" class="btn btn-outline-warning btn-sm">수정</a>
+                        
                     <%# 삭제기능 추가 %>
-                    <form action="/delete/<%= posts[i]._id %>" method="POST">
-                        <button class="btn btn-outline-danger btn-sm">삭제</button>
-                    </form>
+                        <form action="/delete/<%= posts[i]._id %>" method="POST" class="m-0">
+                            <button type="submit" class="btn btn-outline-danger btn-sm">삭제</button>
+                        </form>
+                    </div>
+                    
                 </div>
             <% } %>
         </div>
