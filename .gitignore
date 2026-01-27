@@ -1,0 +1,7 @@
+node_modules/
+.env
+dist/
+*.log
+
+# VS Code Code Runner temporary files
+tempCodeRunnerFile.*
