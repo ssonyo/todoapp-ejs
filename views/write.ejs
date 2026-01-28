@@ -17,7 +17,7 @@
                     <div class="card-body p-4">
                         <h2 class="card-title fw-bold mb-4">✍️ 새 할 일 등록</h2>
                         
-                        <form action="/add" method="POST">
+                        <form action="/post/add" method="POST">
                             <div class="mb-3">
                                 <label class="form-label fw-semibold">제목</label>
                                 <input type="text" name="title" class="form-control form-control" placeholder="무엇을 해야 하나요?" required>
@@ -36,7 +36,7 @@
                             
                             <div class="d-grid gap-2">
                                 <button type="submit" class="btn btn-primary btn-lg fw-bold">저장하기</button>
-                                <a href="/list" class="btn btn-outline-secondary">취소</a>
+                                <a href="/post/list" class="btn btn-outline-secondary">취소</a>
                             </div>
                         </form>
                     </div>
