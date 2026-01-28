@@ -112,6 +112,12 @@ app.get("/detail/:id", async (req: Request, res: Response) => {
 
 
 
+app.delete('/delete/:id', async (req: Request, res: Response) => {
+    await db.collection('posts').deleteOne({_id: new ObjectId(req.params.id)});
+    res.json({ message: '삭제 성공!'})
+});
+
+/*
 app.post("/delete/:id", async (req: Request, res: Response) => {
     try {
         //1. url에 담긴 id값 꺼내기
@@ -135,4 +141,6 @@ app.post("/delete/:id", async (req: Request, res: Response) => {
         console.log(e);
         res.status(500).send('삭제 중 에러가 발생!')
     }
-})
+});
+
+*/

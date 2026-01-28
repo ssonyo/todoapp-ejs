@@ -1,30 +1,89 @@
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>투두앱</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TodoApp - 홈</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .hero-section {
+            background: linear-gradient(120deg, #2c3e50, #4ca1af);
+            color: white;
+            padding: 60px 0;
+            border-radius: 0 0 20px 20px;
+        }
+    </style>
 </head>
-<body>
+<body class="bg-light">
 
-    <h1>나의 투두 리스트</h1>
+    <%- include('views/nav.ejs') %>
 
-    <div>
-        <input type="text" placeholder="할 일을 적으세요">
-        <button>추가</button>
-    </div>
+    <header class="hero-section text-center mb-5 shadow">
+        <div class="container">
+            <h1 class="display-4 fw-bold">Welcome to TodoApp! 🚀</h1>
+            <p class="lead">오늘 할 일을 관리하고 생산성을 높여보세요.</p>
+        </div>
+    </header>
 
-    <hr>
+    <main class="container">
+        <div class="row g-4">
+            <div class="col-md-5">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h5 class="card-title fw-bold mb-3 text-primary">⚡ 빠른 추가</h5>
+                        <form action="/add" method="POST"> <div class="input-group mb-3">
+                                <input type="text" name="title" class="form-control form-control-lg" placeholder="무엇을 해야 하나요?" required>
+                                <button class="btn btn-primary" type="submit">추가</button>
+                            </div>
+                        </form>
+                        <p class="text-muted small">* 상세 내용은 '글쓰기' 메뉴를 이용하세요.</p>
+                    </div>
+                </div>
+            </div>
 
-    <ul>
-        <li>
-            <span>💻 몽고디비 공부하기</span>
-            <button>삭제</button>
-        </li>
-        <li>
-            <span>🍎 사과 사오기</span>
-            <button>삭제</button>
-        </li>
-    </ul>
+            <div class="col-md-7">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="card-title fw-bold mb-0">📌 최근 할 일</h5>
+                            <a href="/list" class="btn btn-outline-secondary btn-sm">전체 보기</a>
+                        </div>
+                        
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                                <div>
+                                    <span class="fs-5">💻 몽고디비 공부하기</span>
+                                </div>
+                                <span class="badge bg-info rounded-pill">Today</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                                <div>
+                                    <span class="fs-5 text-decoration-line-through text-muted">🍎 사과 사오기</span>
+                                </div>
+                                <span class="badge bg-secondary rounded-pill">Done</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
 
+        <div class="row mt-5 text-center">
+            <div class="col-4">
+                <h2 class="fw-bold text-primary">12</h2>
+                <p class="text-muted">진행 중</p>
+            </div>
+            <div class="col-4">
+                <h2 class="fw-bold text-success">45</h2>
+                <p class="text-muted">완료됨</p>
+            </div>
+            <div class="col-4">
+                <h2 class="fw-bold text-warning">80%</h2>
+                <p class="text-muted">달성률</p>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
