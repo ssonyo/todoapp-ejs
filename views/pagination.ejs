@@ -1,0 +1,17 @@
+<nav aria-label="Page navigation" class="mt-4">
+  <ul class="pagination justify-content-center">
+    <% if (currentPage > 1) { %>
+      <li class="page-item">
+        <a class="page-link" href="/list?page=<%= currentPage - 1 %>">이전</a>
+      </li>
+    <% } %>
+    
+    <li class="page-item active"><a class="page-link"><%= currentPage %></a></li>
+
+    <% if (totalPages && currentPage < totalPages) { %>
+      <li class="page-item">
+        <a class="page-link" href="/list?page=<%= currentPage + 1 %>">다음</a>
+      </li>
+    <% } %>
+  </ul>
+</nav>
