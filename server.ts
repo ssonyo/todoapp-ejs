@@ -46,7 +46,7 @@ app.get('/', (req: Request, res: Response) => {
 app.get('/list', async (req: Request, res: Response) => {
 
     const page = parseInt(req.query.page as string) || 1; // 현재 페이지 번호
-    const limit = 10;
+    const limit = 3;
 
 
     try {
@@ -75,17 +75,6 @@ app.get('/write', (req: Request, res: Response) => {
 
 
 
-app.get('/edit/:id', async (req: Request, res: Response) => {
-    try {
-        const targetId = req.params.id;
-        const data = await db.collection('posts').findOne({_id: new ObjectId(targetId)});
-        res.render('edit.ejs', { data : data });
-    } catch (e) {
-        console.log(e);
-        res.status(500).send('서버에러 발생')
-    }
-});
-
 app.post('/add', async (req: Request, res: Response) => {
     // 1. 브라우저가 보낸 데이터가 잘 왔는지 확인
     console.log(req.body);
@@ -105,6 +94,43 @@ app.post('/add', async (req: Request, res: Response) => {
     }
 });
 
+
+
+app.get('/edit/:id', async (req: Request, res: Response) => {
+    try {
+        const targetId = req.params.id;
+        const data = await db.collection('posts').findOne({_id: new ObjectId(targetId)});
+        res.render('edit.ejs', { data : data });
+    } catch (e) {
+        console.log(e);
+        res.status(500).send('서버에러 발생')
+    }
+});
+
+
+app.post('/edit/:id', async (req: Request, res: Response) => {
+    // 1. 브라우저가 보낸 데이터가 잘 왔는지 확인
+    console.log(req.body);
+    try {
+        // 2. db posts 컬렉션에서 수정
+        await db.collection('posts').updateOne(
+            { _id: new ObjectId(req.params.id) },
+            {
+                $set: {
+                    title: req.body.title,
+                    content: req.body.content,
+                    dueDate: req.body.dueDate,
+                    createdAt: new Date(),
+                    isDeleted: false
+                }
+            }
+        );
+        res.redirect('/list');
+    } catch (e) {
+        console.log(e);
+        res.status(500).send('서버에러 발생')
+    }
+});
 
 app.get("/detail/:id", async (req: Request, res: Response) => {
     

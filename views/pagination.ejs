@@ -8,6 +8,10 @@
     
     <li class="page-item active"><a class="page-link"><%= currentPage %></a></li>
 
-    <li class="page-item"><a class="page-link" href="/list?page=<%= currentPage + 1 %>">다음</a></li>
+    <% if (totalPages && currentPage < totalPages) { %>
+      <li class="page-item">
+        <a class="page-link" href="/list?page=<%= currentPage + 1 %>">다음</a>
+      </li>
+    <% } %>
   </ul>
 </nav>
