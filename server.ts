@@ -44,12 +44,24 @@ app.get('/', (req: Request, res: Response) => {
 
 // 2. 글 목록 페이지: DB에서 데이터 꺼내와서 EJS에 꽂아주기
 app.get('/list', async (req: Request, res: Response) => {
+
+    const page = parseInt(req.query.page as string) || 1; // 현재 페이지 번호
+    const limit = 10;
+
+
     try {
         // 'posts' 컬렉션의 모든 데이터를 찾아서 배열로 변환
-        const result = await db.collection('posts').find().toArray();
+        const totalPosts = await db.collection('posts').countDocuments({ isDeleted: { $ne: true } });
+        const totalPages = Math.ceil(totalPosts / limit);
+
+        const result = await db.collection('posts')
+            .find({ isDeleted: { $ne: true } }) // isDeleted 필드가 true가 아닌 문서만 조회
+            .skip((page - 1) * limit) // pagenation: 건너뛸 문서 수 계산
+            .limit(limit) // pagenation: 한 번에 가져올 문서 수 제한
+            .toArray();
         
         // 브라우저에 list.ejs 파일을 보내는데, DB 데이터를 'posts'라는 이름으로 담아서 보냄
-        res.render('list.ejs', { posts: result });
+        res.render('list.ejs', { posts: result, currentPage: page, totalPages: totalPages });
     } catch (err) {
         console.error(err);
         res.status(500).send('데이터 조회 중 에러 발생');
@@ -83,7 +95,8 @@ app.post('/add', async (req: Request, res: Response) => {
             title: req.body.title,
             content: req.body.content,
             dueDate: req.body.dueDate,
-            createdAt: new Date()
+            createdAt: new Date(),
+            isDeleted: false   
         });
         res.redirect('/list');
     } catch (e) {
@@ -113,8 +126,16 @@ app.get("/detail/:id", async (req: Request, res: Response) => {
 
 
 app.delete('/delete/:id', async (req: Request, res: Response) => {
-    await db.collection('posts').deleteOne({_id: new ObjectId(req.params.id)});
+    try {
+        await db.collection('posts').updateOne(
+            {_id: new ObjectId(req.params.id)},
+            {$set: { isDeleted: true } }
+        );
     res.json({ message: '삭제 성공!'})
+    } catch (e) {
+        console.log(e);
+        res.status(500).send('서버에러 발생')
+    }
 });
 
 /*
