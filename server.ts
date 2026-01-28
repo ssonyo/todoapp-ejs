@@ -62,6 +62,18 @@ app.get('/write', (req: Request, res: Response) => {
 });
 
 
+
+app.get('/edit/:id', async (req: Request, res: Response) => {
+    try {
+        const targetId = req.params.id;
+        const data = await db.collection('posts').findOne({_id: new ObjectId(targetId)});
+        res.render('edit.ejs', { data : data });
+    } catch (e) {
+        console.log(e);
+        res.status(500).send('서버에러 발생')
+    }
+});
+
 app.post('/add', async (req: Request, res: Response) => {
     // 1. 브라우저가 보낸 데이터가 잘 왔는지 확인
     console.log(req.body);
@@ -100,6 +112,12 @@ app.get("/detail/:id", async (req: Request, res: Response) => {
 
 
 
+app.delete('/delete/:id', async (req: Request, res: Response) => {
+    await db.collection('posts').deleteOne({_id: new ObjectId(req.params.id)});
+    res.json({ message: '삭제 성공!'})
+});
+
+/*
 app.post("/delete/:id", async (req: Request, res: Response) => {
     try {
         //1. url에 담긴 id값 꺼내기
@@ -123,4 +141,6 @@ app.post("/delete/:id", async (req: Request, res: Response) => {
         console.log(e);
         res.status(500).send('삭제 중 에러가 발생!')
     }
-})
+});
+
+*/

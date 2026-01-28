@@ -12,7 +12,7 @@
 
         <div class="list-group">
             <% for (let i = 0; i < posts.length; i++) { %>
-                <div class="list-group-item d-flex justify-content-between align-items-center p-3 shadow-sm mb-2 rounded">
+                <div id="post-<%= posts[i]._id %>" class="list-group-item d-flex justify-content-between align-items-center p-3 shadow-sm mb-2 rounded">
                     <div>
                         <a href="/detail/<%= posts[i]._id %>" class="text-decoration-none link-dark fw-bold">
                             <%= posts[i].title %>
@@ -28,14 +28,67 @@
                         </div>
                     </div>
 
+                    <%# 수정기능 추가 %>
+                    <div class="d-flex align-items-center gap-2">
+                        <a href="/edit/<%= posts[i]._id %>" class="btn btn-outline-warning btn-sm">수정</a>
+                    
+                    <% if (false) { %>
                     <%# 삭제기능 추가 %>
-                    <form action="/delete/<%= posts[i]._id %>" method="POST">
-                        <button class="btn btn-outline-danger btn-sm">삭제</button>
-                    </form>
+                        <form action="/delete/<%= posts[i]._id %>" method="POST" class="m-0">
+                            <button type="submit" class="btn btn-outline-danger btn-sm">삭제</button>
+                        </form>
+                    <% } %>
+
+                        <button 
+                            type="button" 
+                            class="btn btn-outline-danger btn-sm delete-btn" 
+                            data-id="<%= posts[i]._id %>">
+                            삭제
+                        </button>
+                    </div>
+                    
                 </div>
             <% } %>
         </div>
     </div>
+
+
+<script>
+    // 1. 모든 삭제 버튼을 선택합니다.
+    const deleteButtons = document.querySelectorAll('.delete-btn');
+
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', async function(e) {
+            // 2. 버튼의 주머니(data-id)에서 게시글 ID를 꺼냅니다.
+            const postId = e.target.dataset.id;
+
+            // 실수로 누르는 것 방지
+            if (!confirm('ㄹㅇ 삭제함?')) return;
+
+            try {
+                // 3. 서버에 "비동기(AJAX)"로 삭제 요청을 보냅니다.
+                // 만약 서버가 app.post로 되어 있다면 method를 'POST'로 바꾸세요!
+                const response = await fetch(`/delete/${postId}`, {
+                    method: 'DELETE' 
+                });
+
+                // 서버의 응답을 JSON으로 변환
+                const result = await response.json();
+
+                if (response.ok) {
+                    // 4. [성공 시] 해당 ID를 가진 줄(div)을 화면에서 즉시 제거!
+                    document.getElementById(`post-${postId}`).remove();
+                    console.log('서버 응답:', result.message);
+                } else {
+                    alert('서버에서 삭제를 거부했습니다.');
+                }
+            } catch (error) {
+                console.error('통신 에러:', error);
+                alert('서버와 연결할 수 없습니다. (서버가 켜져 있는지 확인하세요!)');
+            }
+        });
+    });
+</script>
 
 </body>
 </html>

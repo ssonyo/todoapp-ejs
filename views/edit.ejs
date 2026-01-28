@@ -17,28 +17,27 @@
                     <div class="card-body p-4">
                         <h2 class="card-title fw-bold mb-4">✍️ 수정 끄적끄적 </h2>
                         
-                        <form action="/add" method="POST">
+                        <form action="/edit" method="POST">
+                            
+                            <input type="text" name="id" value="<%= data._id %>" style="display: none;">
+
                             <div class="mb-3">
                                 <label class="form-label fw-semibold">제목</label>
-                                <input type="text" name="title" class="form-control form-control" placeholder="무엇을 해야 하나요?" required>
+                                <input type="text" name="title" class="form-control" value="<%= data.title %>">
                             </div>
                             
                             <div class="mb-4">
                                 <label class="form-label fw-semibold">상세 내용</label>
-                                <textarea name="content" class="form-control" rows="4" placeholder="상세한 설명을 적어주세요"></textarea>
+                                <textarea name="content" class="form-control" rows="4"><%= data.content %></textarea>
                             </div>
 
                             <div class="mb-4">
                                 <label class="form-label fw-semibold">마감 기한</label>
-                                <input type="date" name="dueDate" class="form-control">
+                                <input type="date" name="dueDate" class="form-control" value="<%= data.dueDate %>">
                             </div>
 
-                            
-                            <div class="d-grid gap-2">
-                                <button type="submit" class="btn btn-primary btn-lg fw-bold">저장하기</button>
-                                <a href="/list" class="btn btn-outline-secondary">취소</a>
-                            </div>
-                        </form>
+                            <button type="submit" class="btn btn-primary">수정 완료</button>
+                        </form> 
                     </div>
                 </div>
             </div>
